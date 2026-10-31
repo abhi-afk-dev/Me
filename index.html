@@ -27,8 +27,7 @@
       })();
     </script>
 
-    <!-- Preload the mask so the first click doesn't stutter -->
-    <link rel="preload" as="image" href="dazai_again.gif" />
+    <!-- <link rel="preload" as="image" href="dazai_again.gif" /> -->
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -38,7 +37,21 @@
       rel="stylesheet"
     />
 
+    <script>
+      const originalWarn = console.warn;
+      console.warn = (...args) => {
+        if (
+          typeof args[0] === "string" &&
+          args[0].includes("cdn.tailwindcss.com")
+        )
+          return;
+        originalWarn(...args);
+      };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      console.warn = originalWarn;
+    </script>
     <script>
       tailwind.config = {
         darkMode: ["selector", '[data-theme="dark"]'],
@@ -292,8 +305,8 @@
 
         <p class="rise" style="animation-delay: 0.32s">
           Outside of coding, I'm usually researching, writing, watching anime,
-          reading, listening to music, or taking photos. I've worked at startups
-          and non-profits, and few of my projects are available on
+          reading, listening to music, or sketching. I've worked at startups and
+          non-profits, few of my projects are available on
           <a class="prose-link" href="https://github.com/abhi-afk-dev/"
             >GitHub</a
           >.
@@ -509,12 +522,14 @@
       setInterval(tick, 1000);
 
       const AVATARS = ["1.png", "2.png", "3.jpeg", "4.jpg"];
-      const AVATAR_INTERVAL = 3500; // ms each image stays on screen
-      const AVATAR_FADE = 500; // ms, keep equal to duration-500 on the <img>
+      const AVATAR_INTERVAL = 3500;
+      const AVATAR_FADE = 500;
+
+      new Image().src = "dazai_again.gif";
 
       const avatar = document.getElementById("avatar");
       AVATARS.forEach((src) => {
-        new Image().src = src; // preload so swaps never flash
+        new Image().src = src;
       });
 
       let avatarIndex = 0;
