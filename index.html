@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Death</title>
+    <meta
+      name="description"
+      content="Abhilash Kr Mishra — AI engineer and product builder working on agentic systems, open-source and cybersecurity."
+    />
+    <meta name="theme-color" content="#000000" />
+
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("theme");
+          var prefers = matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+          var theme = saved || prefers;
+          document.documentElement.setAttribute("data-theme", theme);
+          document
+            .querySelector('meta[name="theme-color"]')
+            .setAttribute("content", theme === "dark" ? "#000000" : "#fbfbfa");
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Preload the mask so the first click doesn't stutter -->
+    <link rel="preload" as="image" href="dazai_again.gif" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: ["selector", '[data-theme="dark"]'],
+        theme: {
+          extend: {
+            fontFamily: {
+              serif: ['"Instrument Serif"', "Georgia", "serif"],
+              sans: [
+                "Inter",
+                "-apple-system",
+                "BlinkMacSystemFont",
+                "system-ui",
+                "sans-serif",
+              ],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      :root {
+        --mask: url("dazai_again.gif");
+        --mask-size: 25vmax; /* size of the character while it's falling/dancing */
+      }
+
+      /* Dot grid background (colour follows the theme) */
+      html[data-theme="dark"] {
+        --app-dot: rgba(235, 235, 233, 0.16);
+      }
+      html[data-theme="light"] {
+        --app-dot: rgba(17, 17, 16, 0.14);
+      }
+      .dot-grid {
+        background-image: radial-gradient(
+          var(--app-dot) 1.55px,
+          transparent 1.5px
+        );
+        background-size: 28px 28px;
+        background-position: center top;
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          black 40%,
+          transparent 100%
+        );
+        mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+      h1 {
+        font-size: 1.25rem;
+      }
+      p {
+        font-size: 1.05rem;
+      }
+      body {
+        -webkit-font-smoothing: antialiased;
+        transition:
+          background-color 0.8s cubic-bezier(0.65, 0, 0.35, 1),
+          color 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+      }
+
+      /* ── Theme switch: character FALLS from the top, bounces, dances, then ZOOMS ── */
+      ::view-transition-group(root) {
+        z-index: 100;
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation: theme-drop-zoom 2.6s linear both;
+        mix-blend-mode: normal;
+      }
+      ::view-transition-new(root) {
+        -webkit-mask: var(--mask) 50% calc(var(--mask-size) * -1.2) /
+          var(--mask-size) no-repeat;
+        mask: var(--mask) 50% calc(var(--mask-size) * -1.2) / var(--mask-size)
+          no-repeat;
+      }
+
+      /* Easing is set per keyframe (applies to the segment that follows it) */
+      @keyframes theme-drop-zoom {
+        /* 1. fall from above the viewport (gravity: ease-in) */
+        0% {
+          -webkit-mask-position: 50% calc(var(--mask-size) * -1.2);
+          mask-position: 50% calc(var(--mask-size) * -1.2);
+          -webkit-mask-size: var(--mask-size);
+          mask-size: var(--mask-size);
+          animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+        }
+        /* 2. land in the centre */
+        22% {
+          -webkit-mask-position: 50% 50%;
+          mask-position: 50% 50%;
+          -webkit-mask-size: var(--mask-size);
+          mask-size: var(--mask-size);
+          animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
+        }
+        /* 3. small bounce */
+        29% {
+          -webkit-mask-position: 50% 42%;
+          mask-position: 50% 42%;
+          animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+        }
+        35% {
+          -webkit-mask-position: 50% 50%;
+          mask-position: 50% 50%;
+        }
+        /* 4. dance in place */
+        84% {
+          -webkit-mask-position: 50% 50%;
+          mask-position: 50% 50%;
+          -webkit-mask-size: var(--mask-size);
+          mask-size: var(--mask-size);
+          animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
+        }
+        /* 5. zoom in until the new theme fills the screen */
+        100% {
+          -webkit-mask-position: 50% 50%;
+          mask-position: 50% 50%;
+          -webkit-mask-size: 750vmax;
+          mask-size: 750vmax;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+          animation: none;
+        }
+        ::view-transition-new(root) {
+          -webkit-mask: none;
+          mask: none;
+        }
+      }
+
+      html[data-theme="light"] .moon-icon {
+        display: none;
+      }
+      html[data-theme="dark"] .sun-icon {
+        display: none;
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .rise {
+        animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .rise {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body
+    class="relative min-h-screen min-h-svh flex flex-col bg-[#fbfbfa] dark:bg-black text-[#111110] dark:text-[#ebebe9] font-sans text-[16px] leading-[1.7] selection:bg-black/10 dark:selection:bg-white/15"
+  >
+    <!-- Dot grid background -->
+    <div
+      aria-hidden="true"
+      class="dot-grid absolute inset-0 -z-10 pointer-events-none"
+    ></div>
+
+    <button
+      id="theme-toggle"
+      type="button"
+      aria-label="Toggle theme"
+      class="fixed top-4 right-4 sm:top-6 sm:right-6 z-50 flex h-[38px] w-[38px] sm:h-[42px] sm:w-[42px] items-center justify-center rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-[#0b0b0b] text-[#3c3c3a] dark:text-[#b8b8b4] transition hover:-translate-y-px hover:text-black dark:hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
+    >
+      <svg
+        class="sun-icon"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="4" />
+        <path
+          d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+        />
+      </svg>
+      <svg
+        class="moon-icon"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+    </button>
+
+    <main
+      class="mx-auto flex w-[560px] lg:w-[620px] flex-1 flex-col justify-center px-6 pt-20 pb-6 sm:pt-12"
+    >
+      <header
+        class="rise mb-6 flex items-center gap-[13px] sm:gap-[17px]"
+        style="animation-delay: 0.1s"
+      >
+        <img
+          id="avatar"
+          src="4.png"
+          alt="Death"
+          width="72"
+          height="72"
+          class="h-[62px] w-[62px] sm:h-[72px] sm:w-[72px] flex-none rounded-[8px] sm:rounded-[9px] object-cover bg-black/5 dark:bg-white/10 transition-opacity duration-500 motion-reduce:transition-none"
+        />
+        <div class="min-w-0">
+          <h1
+            class="font-serif italic font-normal text-[2.1rem] sm:text-5xl leading-none tracking-[-0.03em] mb-1"
+          >
+            Abhilash Kr Mishra
+          </h1>
+          <p
+            class="lowercase tracking-[0.04em] text-[15px] text-[#6e6e6a] dark:text-[#8a8a85]"
+          >
+            AI Engineer &amp; Product Builder
+          </p>
+        </div>
+      </header>
+
+      <section
+        class="space-y-[14px] text-[15.5px] leading-[1.7] text-[#3c3c3a] dark:text-[#b8b8b4]"
+      >
+        <p class="rise" style="animation-delay: 0.25s">
+          Hi, I'm a 21-year-old software engineer, product builder, and curious
+          mind deeply interested in open source, agentic systems, and
+          cybersecurity. I build things for fun (and sometimes they are actually
+          useful).
+        </p>
+
+        <p class="rise" style="animation-delay: 0.32s">
+          Outside of coding, I'm usually researching, writing, watching anime,
+          reading, listening to music, or taking photos. I've worked at startups
+          and non-profits, and few of my projects are available on
+          <a class="prose-link" href="https://github.com/abhi-afk-dev/"
+            >GitHub</a
+          >.
+        </p>
+
+        <p class="rise" style="animation-delay: 0.39s">
+          I'm open to new roles, collaborations, and opportunities. You can see
+          my
+          <a class="prose-link" href="/Resume.pdf">resume</a>,
+          <a class="prose-link" href="https://twitter.com/abhi_afk_dev"
+            >find me elsewhere</a
+          >, or reach out at
+          <a class="prose-link" href="mailto:abhilash@takumi.run"
+            >abhilash@takumi.run</a
+          >.
+        </p>
+
+        <p class="rise" style="animation-delay: 0.46s">
+          If you're here, chances are I'd enjoy talking to you — I get
+          nerd-sniped easily, and an email about something that recently
+          fascinated you would honestly make my day.
+        </p>
+      </section>
+
+      <!-- Projects: stacked on mobile; on desktop the names sit in a fixed
+           column so every description starts at the same x and wrapped lines
+           hang under the description, not under the name. -->
+      <section
+        class="rise mt-6"
+        style="animation-delay: 0.5s"
+        aria-label="Projects"
+      >
+        <ul class="space-y-3 sm:space-y-2.5">
+          <li
+            class="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-3"
+          >
+            <a class="prose-link flex-none leading-snug sm:w-[52px]" href="#"
+              >Kizu</a
+            >
+            <p
+              class="leading-snug text-[14.5px] text-[#6e6e6a] dark:text-[#8a8a85]"
+            >
+              Headless Python error tracking via decorators and async webhooks.
+            </p>
+          </li>
+          <li
+            class="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-3"
+          >
+            <a class="prose-link flex-none leading-snug sm:w-[52px]" href="#"
+              >Kaito</a
+            >
+            <p
+              class="leading-snug text-[14.5px] text-[#6e6e6a] dark:text-[#8a8a85]"
+            >
+              Autonomous AI assistant wired to GitHub, Discord and local
+              workspaces via MCP.
+            </p>
+          </li>
+          <li
+            class="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-3"
+          >
+            <a class="prose-link flex-none leading-snug sm:w-[52px]" href="#"
+              >MedoX</a
+            >
+            <p
+              class="leading-snug text-[14.5px] text-[#6e6e6a] dark:text-[#8a8a85]"
+            >
+              Clinical AI that automates nurse documentation and tracks
+              epidemics.
+            </p>
+          </li>
+        </ul>
+      </section>
+
+      <nav
+        class="rise w-full mt-6 flex flex-wrap items-center justify-end gap-x-[13px] gap-y-[9px] sm:gap-x-[26px] text-[15px] sm:text-[15.5px] font-medium"
+        style="animation-delay: 0.55s"
+        aria-label="Primary"
+      >
+        <a class="nav-link" href="https://takumi.run/blog">blog</a>
+        <a class="nav-link" href="https://github.com/abhi-afk-dev">github</a>
+        <a class="nav-link" href="https://twitter.com/abhi_afk_dev">twitter</a>
+        <a class="nav-link" href="mailto:abhilash@takumi.run">email</a>
+      </nav>
+      <p
+        class="rise w-full mt-7 flex items-center justify-end gap-[9px] text-sm font-medium"
+        style="animation-delay: 0.7s"
+      >
+        <span>New Delhi, India</span>
+        <span
+          class="h-[3px] w-[3px] rounded-full bg-[#9b9b96] dark:bg-[#5f5f5b]"
+          aria-hidden="true"
+        ></span>
+        <time id="clock" class="tabular-nums"></time>
+      </p>
+    </main>
+
+    <style type="text/tailwindcss">
+      .prose-link {
+        @apply font-medium text-[#111110] dark:text-[#ebebe9] underline underline-offset-[3px] decoration-[1.5px]
+             decoration-black/15 dark:decoration-white/15 hover:decoration-current transition;
+      }
+      .nav-link {
+        @apply text-[#3c3c3a] dark:text-[#b8b8b4] hover:text-black dark:hover:text-white transition-colors;
+      }
+    </style>
+
+    <script>
+      const headingStyle = `
+  font-size: 24px; 
+  font-weight: bold; 
+  color: #fff; 
+  text-shadow: 1px 1px 2px #000; 
+  font-family: 'Instrument Serif', serif;
+`;
+
+      const textStyle = `
+  font-size: 14px; 
+  color: #b8b8b4; 
+  font-family: monospace;
+`;
+
+      const linkStyle = `
+  font-size: 14px; 
+  background: #111; 
+  padding: 6px 12px; 
+  border: 1px solid #ffffff; 
+  border-radius: 4px; 
+  font-family: monospace;
+`;
+
+      console.log("%c🕵️‍♂️ Curious, aren't we?", headingStyle);
+      console.log(
+        "%cLooks like you want to know more than what's on the surface...",
+        textStyle,
+      );
+      console.log(
+        "%cLet's build something crazy ➔ abhilash@takumi.run",
+        linkStyle,
+      );
+      const root = document.documentElement;
+      const btn = document.getElementById("theme-toggle");
+      const metaTheme = document.querySelector('meta[name="theme-color"]');
+      let busy = false; // ignore clicks while the animation is running
+
+      // Mask failsafe: CSS masks fetch the GIF in CORS mode. If that fails (404,
+      // or the page was opened by double-click via file://), the new theme stays
+      // invisible during the animation. Fall back to a plain circle instead.
+      (function () {
+        const m = getComputedStyle(root)
+          .getPropertyValue("--mask")
+          .match(/url\((['"]?)(.*?)\1\)/);
+        if (!m) return;
+        fetch(m[2])
+          .then((r) => {
+            if (!r.ok) throw new Error(r.status);
+          })
+          .catch(() => {
+            console.warn(
+              "[theme] Can't load " +
+                m[2] +
+                " as a mask (missing file, or page opened via file://). Using a circle fallback.",
+            );
+            const circle =
+              "data:image/svg+xml," +
+              encodeURIComponent(
+                "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50'/></svg>",
+              );
+            root.style.setProperty("--mask", 'url("' + circle + '")');
+          });
+      })();
+
+      function setTheme(next) {
+        root.setAttribute("data-theme", next);
+        metaTheme.setAttribute(
+          "content",
+          next === "dark" ? "#000000" : "#fbfbfa",
+        );
+        try {
+          localStorage.setItem("theme", next);
+        } catch (e) {}
+      }
+
+      btn.addEventListener("click", () => {
+        if (busy) return;
+
+        const next =
+          root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        if (!document.startViewTransition || reduce) {
+          setTheme(next);
+          return;
+        }
+
+        busy = true;
+        const transition = document.startViewTransition(() => setTheme(next));
+        transition.finished.finally(() => (busy = false));
+      });
+
+      const clock = document.getElementById("clock");
+      const fmt = new Intl.DateTimeFormat("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "Asia/Kolkata",
+        timeZoneName: "short",
+      });
+      function tick() {
+        clock.textContent = fmt.format(new Date()).replace(/GMT\+5:30/, "IST");
+      }
+      tick();
+      setInterval(tick, 1000);
+
+      const AVATARS = ["1.png", "2.png", "3.jpeg", "4.jpg"];
+      const AVATAR_INTERVAL = 3500; // ms each image stays on screen
+      const AVATAR_FADE = 500; // ms, keep equal to duration-500 on the <img>
+
+      const avatar = document.getElementById("avatar");
+      AVATARS.forEach((src) => {
+        new Image().src = src; // preload so swaps never flash
+      });
+
+      let avatarIndex = 0;
+      setInterval(() => {
+        if (document.hidden) return; // don't loop in background tabs
+        avatarIndex = (avatarIndex + 1) % AVATARS.length;
+        const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        avatar.style.opacity = "0";
+        setTimeout(
+          () => {
+            avatar.src = AVATARS[avatarIndex];
+            avatar.style.opacity = "1";
+          },
+          reduce ? 0 : AVATAR_FADE,
+        );
+      }, AVATAR_INTERVAL);
+    </script>
+  </body>
+</html>
