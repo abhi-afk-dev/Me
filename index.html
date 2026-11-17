@@ -73,6 +73,14 @@
     </script>
 
     <style>
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
       :root {
         --mask: url("dazai_again.gif");
         --mask-size: 25vmax; /* size of the character while it's falling/dancing */
@@ -217,7 +225,7 @@
   </head>
 
   <body
-    class="relative min-h-screen min-h-svh flex flex-col bg-[#fbfbfa] dark:bg-black text-[#111110] dark:text-[#ebebe9] font-sans text-[16px] leading-[1.7] selection:bg-black/10 dark:selection:bg-white/15"
+    class="relative .hide-scrollbar min-h-screen min-h-svh flex flex-col bg-[#fbfbfa] dark:bg-black text-[#111110] dark:text-[#ebebe9] font-sans text-[16px] leading-[1.7] selection:bg-black/10 dark:selection:bg-white/15"
   >
     <!-- Dot grid background -->
     <div
